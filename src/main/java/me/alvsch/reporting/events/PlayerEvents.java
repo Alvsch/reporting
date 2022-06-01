@@ -13,7 +13,7 @@ public class PlayerEvents implements Listener {
     @EventHandler
     public void playerDropItem(InventoryClickEvent event) {
 
-        if(!event.getView().getTitle().equals("§cReports") || !event.getView().getTitle().contains("§cReport ")) {
+        if(!event.getView().getTitle().equals("§cReports") && !event.getView().getTitle().contains("§cReport")) {
             return;
         }
 

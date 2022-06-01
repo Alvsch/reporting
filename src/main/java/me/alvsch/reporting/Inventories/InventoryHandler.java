@@ -12,7 +12,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 public class InventoryHandler {
 
-    public static void reportMenu(Player player, OfflinePlayer offlinePlayer, String[] args) {
+    public static void reportMenu(Player player, OfflinePlayer offlinePlayer) {
 
 
         Inventory inv = Bukkit.createInventory(null, 27, Utils.color("&cReport " + offlinePlayer.getName()));
@@ -21,10 +21,10 @@ public class InventoryHandler {
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(" ");
         item.setItemMeta(meta);
-        for(int i = 0; i < 8; i++) {
+        for(int i = 0; i < 9; i++) {
             inv.setItem(i, item);
         }
-        for(int i = 17; i < inv.getSize(); i++) {
+        for(int i = 18; i < inv.getSize(); i++) {
             inv.setItem(i, item);
         }
 
@@ -32,7 +32,25 @@ public class InventoryHandler {
         SkullMeta skullMeta = (SkullMeta) item.getItemMeta();
         skullMeta.setOwningPlayer(offlinePlayer);
         item.setItemMeta(skullMeta);
-        inv.setItem(6, item);
+        inv.setItem(4, item);
+
+        item = new ItemStack(Material.PAPER, 1);
+        meta = item.getItemMeta();
+        meta.setDisplayName("Chat");
+        item.setItemMeta(meta);
+        inv.setItem(10, item);
+
+        item = new ItemStack(Material.DIAMOND_SWORD, 1);
+        meta = item.getItemMeta();
+        meta.setDisplayName("Hacking");
+        item.setItemMeta(meta);
+        inv.setItem(13, item);
+
+        item = new ItemStack(Material.ANVIL, 1);
+        meta = item.getItemMeta();
+        meta.setDisplayName("Other");
+        item.setItemMeta(meta);
+        inv.setItem(16, item);
 
 
         player.openInventory(inv);

@@ -28,7 +28,8 @@ public class ReportCommand implements CommandExecutor {
         Player player = (Player) sender;
 
         if(!(args.length >= 1)) {
-            return false;
+            player.sendMessage(Utils.color("&bdo /report <player> [reason]"));
+            return true;
         }
 
         OfflinePlayer offlinePlayer = Bukkit.getPlayer(args[0]);
@@ -37,7 +38,7 @@ public class ReportCommand implements CommandExecutor {
             return true;
         }
         if(args.length == 1) {
-            InventoryHandler.reportMenu(player, offlinePlayer, args);
+            InventoryHandler.reportMenu(player, offlinePlayer);
             return true;
         }
 
@@ -70,7 +71,7 @@ public class ReportCommand implements CommandExecutor {
 
         }
 
-        player.sendMessage(Utils.color("&eThank You For Reporting! :D"));
+        player.sendMessage(Utils.color("&aThank you for your report a team member will take care of it shortly."));
 
         return true;
     }
