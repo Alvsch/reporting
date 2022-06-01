@@ -36,22 +36,31 @@ public class InventoryHandler {
 
         item = new ItemStack(Material.PAPER, 1);
         meta = item.getItemMeta();
-        meta.setDisplayName("Chat");
+        meta.setDisplayName("§fChat");
         item.setItemMeta(meta);
         inv.setItem(10, item);
 
         item = new ItemStack(Material.DIAMOND_SWORD, 1);
         meta = item.getItemMeta();
-        meta.setDisplayName("Hacking");
+        meta.setDisplayName("§fHacking");
         item.setItemMeta(meta);
         inv.setItem(13, item);
 
         item = new ItemStack(Material.ANVIL, 1);
         meta = item.getItemMeta();
-        meta.setDisplayName("Other");
+        meta.setDisplayName("§fOther");
         item.setItemMeta(meta);
         inv.setItem(16, item);
 
+
+        player.openInventory(inv);
+
+    }
+
+    public static void claimReportMenu(Player player, ItemStack report) {
+        Inventory inv = Bukkit.createInventory(null, 27, "§cClaimed Report");
+
+        inv.setItem(0, report);
 
         player.openInventory(inv);
 

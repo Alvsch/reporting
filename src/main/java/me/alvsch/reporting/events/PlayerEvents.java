@@ -1,6 +1,9 @@
 package me.alvsch.reporting.events;
 
+import me.alvsch.reporting.Inventories.InventoryHandler;
 import me.alvsch.reporting.Main;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
@@ -13,22 +16,41 @@ public class PlayerEvents implements Listener {
     @EventHandler
     public void playerDropItem(InventoryClickEvent event) {
 
-        if(!event.getView().getTitle().equals("§cReports") && !event.getView().getTitle().contains("§cReport")) {
-            return;
-        }
-
         event.setCancelled(true);
-
-        if (event.getClick().equals(ClickType.RIGHT)) {
+        Player player = (Player) event.getWhoClicked();
+        if(event.getView().getTitle().equals("§cReports")) {
             if (event.getCurrentItem() == null) {
                 return;
             }
-            String uuid = event.getCurrentItem().getItemMeta().getLore().get(4).split(" ")[2];
+            if (event.getClick().equals(ClickType.RIGHT)) {
+                String uuid = event.getCurrentItem().getItemMeta().getLore().get(4).split(" ")[2];
 
-            plugin.data.get("reports").getAsJsonObject().remove(uuid);
-            event.getClickedInventory().setItem(event.getRawSlot(), null);
+                plugin.data.get("reports").getAsJsonObject().remove(uuid);
+                event.getClickedInventory().setItem(event.getRawSlot(), null);
 
+            }
+            if(event.getClick().equals(ClickType.LEFT)) {
+                if(event.getCurrentItem().getType().equals(Material.PLAYER_HEAD)) {
+                    InventoryHandler.claimReportMenu(player, event.getCurrentItem());
+                }
+
+            }
+            return;
         }
+        if(event.getView().getTitle().contains("§cReport")) {
+            if (event.getCurrentItem() == null) {
+                return;
+            }
+        event.getCurrentItem().getItemMeta().getDisplayName();
+            player.performCommand("reporting:report " +
+                    event.getClickedInventory().getItem(4).getItemMeta().getDisplayName().split("'s")[0] +
+                    " " + event.getCurrentItem().getItemMeta().getDisplayName());
+            player.closeInventory();
+            return;
+        }
+        event.setCancelled(false);
+
+
 
     }
 

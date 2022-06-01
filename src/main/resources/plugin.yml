@@ -12,6 +12,7 @@ commands:
         aliases:
             - viewreports
             - viewreport
+            - reports
 
         permission: reporting.viewreports
         permission-message: §cYou can't execute this command
