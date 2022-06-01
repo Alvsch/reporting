@@ -1,0 +1,17 @@
+name: Reporting
+version: '${project.version}'
+main: me.alvsch.reporting.Main
+api-version: 1.16
+authors: [ Alvsch ]
+commands:
+    report:
+        usage: /<command> <player> <reason>
+
+    viewreports:
+        usage: /<command>
+        aliases:
+            - viewreports
+            - viewreport
+
+        permission: reporting.viewreports
+        permission-message: §cYou can't execute this command
