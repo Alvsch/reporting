@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import me.alvsch.reporting.Inventories.InventoryHandler;
 import me.alvsch.reporting.commands.ClaimedReportCommand;
+import me.alvsch.reporting.commands.ModerateCommand;
 import me.alvsch.reporting.commands.ReportCommand;
 import me.alvsch.reporting.commands.ViewReportsCommand;
 import me.alvsch.reporting.events.PlayerEvents;
@@ -49,6 +50,7 @@ public final class Main extends JavaPlugin {
         getCommand("report").setExecutor(new ReportCommand());
         getCommand("viewreports").setExecutor(new ViewReportsCommand());
         getCommand("claimedreport").setExecutor(new ClaimedReportCommand());
+        getCommand("moderate").setExecutor(new ModerateCommand());
 
         getServer().getPluginManager().registerEvents(new PlayerEvents(), this);
 

@@ -85,7 +85,7 @@ public class InventoryHandler {
 
         inv.setItem(11, Utils.createItem(Material.ENDER_PEARL, 1, "&bTeleport To Victim"));
         inv.setItem(13, Utils.createItem(Material.EMERALD_BLOCK, 1, "&fBan / Mute Menu"));
-        inv.setItem(15, Utils.createItem(Material.REDSTONE_BLOCK, 1, "&cDelete"));
+        inv.setItem(15, Utils.createItem(Material.REDSTONE_BLOCK, 1, "&cDismiss"));
 
         player.closeInventory();
         player.openInventory(inv);
@@ -130,6 +130,7 @@ public class InventoryHandler {
         if(page != 0) {
             inv.setItem(47, Utils.createItem(Material.ARROW, 1, "&fPrevious Page"));
         }
+        inv.setItem(49, Utils.createItem(Material.BUCKET, 1, "&fClaimed Report", "§fOpens Your currently claimed report"));
 
 
         List<ItemStack> items = new ArrayList<>();
@@ -150,7 +151,7 @@ public class InventoryHandler {
             lore.add("");
             lore.add("§7Reported By: " + reporter);
             lore.add("§7Report ID: " + entry.getKey());
-            lore.add("§f§lLeftClick to claim (WIP)");
+            lore.add("§f§lLeftClick to claim");
             lore.add("§f§lRightClick to remove");
             meta.setLore(lore);
             meta.setDisplayName(Utils.color("&cReport"));

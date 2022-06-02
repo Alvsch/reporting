@@ -21,3 +21,15 @@ commands:
         usage: /<command>
         aliases:
             - myreport
+
+        permission: reporting.viewreports
+        permission-message: §cYou can't execute this command
+
+    moderate:
+        usage: /<command> <player>
+        aliases:
+            - mod
+            - punish
+
+        permission: reporting.moderate
+        permission-message: §cYou can't execute this command

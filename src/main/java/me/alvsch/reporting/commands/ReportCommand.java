@@ -33,9 +33,14 @@ public class ReportCommand implements CommandExecutor {
 
         OfflinePlayer offlinePlayer = Bukkit.getPlayer(args[0]);
         if(offlinePlayer == null || !offlinePlayer.hasPlayedBefore()) {
-            player.sendMessage(Utils.color("That player has never joined before"));
+            player.sendMessage(Utils.color("&cThat Player is not Online or Played here before!"));
             return true;
         }
+        if (offlinePlayer.getUniqueId().equals(player.getUniqueId())) {
+            player.sendMessage(Utils.color("&cYou can't report yourself"));
+            return true;
+        }
+
         if(args.length == 1) {
             InventoryHandler.reportMenu(player, offlinePlayer);
             return true;
@@ -49,10 +54,15 @@ public class ReportCommand implements CommandExecutor {
         }
         reason.append("\"");
 
+        String uncolored_reason = reason.toString();
+        if(uncolored_reason.startsWith("§")) {
+            uncolored_reason = uncolored_reason.substring(2);
+        }
+
         JsonParser parser = new JsonParser();
         JsonObject object = new JsonObject();
         object.add("name", parser.parse(offlinePlayer.getName()));
-        object.add("reason", parser.parse(reason.toString()));
+        object.add("reason", parser.parse(uncolored_reason));
         object.add("reporter", parser.parse(player.getName()));
 
         JsonObject jsonObject = plugin.data.get("reports").getAsJsonObject();
@@ -65,7 +75,7 @@ public class ReportCommand implements CommandExecutor {
             }
             p.sendMessage(Utils.color("&e&l&n-- PLAYER REPORTED --"));
             p.sendMessage(Utils.color("&ePlayer: " + offlinePlayer.getName()));
-            p.sendMessage(Utils.color("&eReason: " + reason));
+            p.sendMessage(Utils.color("&eReason: " + uncolored_reason));
             p.sendMessage(Utils.color("&eOnline: &a" + offlinePlayer.isOnline()));
             p.sendMessage(Utils.color("&eReported By: " + player.getName()));
             p.sendMessage(Utils.color("&e&l&n-- REPORT END --"));

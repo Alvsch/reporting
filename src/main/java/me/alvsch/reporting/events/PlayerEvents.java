@@ -48,6 +48,9 @@ public class PlayerEvents implements Listener {
                 }
                 return;
             }
+            if(item.getType().equals(Material.BUCKET)) {
+                player.performCommand("reporting:myreport");
+            }
 
             if (event.getClick().equals(ClickType.RIGHT)) {
                 String uuid = item.getItemMeta().getLore().get(4).split(" ")[2];
@@ -85,6 +88,9 @@ public class PlayerEvents implements Listener {
             if(material.equals(Material.ENDER_PEARL)) {
                 if(offlinePlayer.isOnline()) {
                     player.teleport((Player) offlinePlayer);
+                    player.performCommand(plugin.getConfig().getString("fly-on-command"));
+                    player.performCommand(plugin.getConfig().getString("vanish-on-command"));
+
                     player.sendMessage(Utils.color("&6Successfully Teleported To " + offlinePlayer.getName()));
                 } else {
                     player.sendMessage(Utils.color("&c" + offlinePlayer.getName() + " &cIs Not Online"));
