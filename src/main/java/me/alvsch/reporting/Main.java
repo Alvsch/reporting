@@ -2,6 +2,7 @@ package me.alvsch.reporting;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import me.alvsch.reporting.Inventories.InventoryHandler;
 import me.alvsch.reporting.commands.ReportCommand;
 import me.alvsch.reporting.commands.ViewReportsCommand;
 import me.alvsch.reporting.events.PlayerEvents;
@@ -26,6 +27,8 @@ public final class Main extends JavaPlugin {
         // Plugin startup logic
 
         plugin = this;
+
+        InventoryHandler.init();
 
         getCommand("report").setExecutor(new ReportCommand());
         getCommand("viewreports").setExecutor(new ViewReportsCommand());
