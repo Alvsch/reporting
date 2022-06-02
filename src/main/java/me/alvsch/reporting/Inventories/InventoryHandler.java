@@ -21,6 +21,8 @@ import java.util.UUID;
 
 public class InventoryHandler {
 
+    private static Main plugin = Main.getPlugin();
+
     private static ItemStack placeholder;
 
     public static void init() {
@@ -66,6 +68,11 @@ public class InventoryHandler {
     }
 
     public static void claimReportMenu(Player player, ItemStack report) {
+        plugin.claimed_reports.remove(player);
+        plugin.claimed_reports.put(player, report);
+        String uuid = report.getItemMeta().getLore().get(4).split(" ")[2];
+
+        plugin.data.get("reports").getAsJsonObject().remove(uuid);
 
         Inventory inv = Bukkit.createInventory(null, 27, "§cClaimed Report");
 

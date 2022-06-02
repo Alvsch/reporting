@@ -3,16 +3,20 @@ package me.alvsch.reporting;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import me.alvsch.reporting.Inventories.InventoryHandler;
+import me.alvsch.reporting.commands.ClaimedReportCommand;
 import me.alvsch.reporting.commands.ReportCommand;
 import me.alvsch.reporting.commands.ViewReportsCommand;
 import me.alvsch.reporting.events.PlayerEvents;
 import me.alvsch.reporting.utils.Utils;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public final class Main extends JavaPlugin {
@@ -20,6 +24,7 @@ public final class Main extends JavaPlugin {
     private static Main plugin;
     private static int report_id;
 
+    public HashMap<Player, ItemStack> claimed_reports = new HashMap<>();
     public JsonObject data;
 
 
@@ -43,6 +48,7 @@ public final class Main extends JavaPlugin {
 
         getCommand("report").setExecutor(new ReportCommand());
         getCommand("viewreports").setExecutor(new ViewReportsCommand());
+        getCommand("claimedreport").setExecutor(new ClaimedReportCommand());
 
         getServer().getPluginManager().registerEvents(new PlayerEvents(), this);
 

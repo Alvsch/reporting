@@ -95,11 +95,8 @@ public class PlayerEvents implements Listener {
                 InventoryHandler.punishMenu(player, offlinePlayer);
             }
             if(material.equals(Material.REDSTONE_BLOCK)) {
-                String uuid = event.getClickedInventory().getItem(4).getItemMeta().getLore().get(4).split(" ")[2];
-
-                plugin.data.get("reports").getAsJsonObject().remove(uuid);
-                event.getClickedInventory().setItem(event.getRawSlot(), null);
-                player.sendMessage(Utils.color("&cSuccessfully Deleted The Report"));
+                plugin.claimed_reports.remove(player);
+                player.sendMessage(Utils.color("&cUnclaimed Report"));
                 player.closeInventory();
             }
 
@@ -133,14 +130,12 @@ public class PlayerEvents implements Listener {
                 player.performCommand(mute_command);
 
             }
-
+            plugin.claimed_reports.remove(player);
 
             player.closeInventory();
             return;
         }
         event.setCancelled(false);
-
-
 
     }
 
