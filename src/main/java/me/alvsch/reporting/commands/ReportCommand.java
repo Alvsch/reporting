@@ -33,7 +33,7 @@ public class ReportCommand implements CommandExecutor {
 
         OfflinePlayer offlinePlayer = Bukkit.getPlayer(args[0]);
         if(offlinePlayer == null || !offlinePlayer.hasPlayedBefore()) {
-            player.sendMessage(Utils.color("&cThat Player is not Online or Played here before!"));
+            player.sendMessage(Utils.color("&cThat Player is not Online or Played has not here before!"));
             return true;
         }
         if (offlinePlayer.getUniqueId().equals(player.getUniqueId())) {
@@ -54,7 +54,7 @@ public class ReportCommand implements CommandExecutor {
         }
         reason.append("\"");
 
-        String uncolored_reason = reason.toString();
+        String uncolored_reason = reason.toString().replace(" \"", "\"");
         if(uncolored_reason.startsWith("§")) {
             uncolored_reason = uncolored_reason.substring(2);
         }
@@ -73,12 +73,11 @@ public class ReportCommand implements CommandExecutor {
             if(!(p.hasPermission("reporting.viewreports"))) {
                 continue;
             }
-            p.sendMessage(Utils.color("&e&l&n-- PLAYER REPORTED --"));
+            p.sendMessage(Utils.color("&e&l-- PLAYER REPORTED --"));
             p.sendMessage(Utils.color("&ePlayer: " + offlinePlayer.getName()));
             p.sendMessage(Utils.color("&eReason: " + uncolored_reason));
-            p.sendMessage(Utils.color("&eOnline: &a" + offlinePlayer.isOnline()));
             p.sendMessage(Utils.color("&eReported By: " + player.getName()));
-            p.sendMessage(Utils.color("&e&l&n-- REPORT END --"));
+            p.sendMessage(Utils.color("&e&l-- REPORT END --"));
 
         }
 

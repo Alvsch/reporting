@@ -74,7 +74,7 @@ public class PlayerEvents implements Listener {
         item.getItemMeta().getDisplayName();
             player.performCommand("reporting:report " +
                     event.getClickedInventory().getItem(4).getItemMeta().getDisplayName().split("'s")[0] +
-                    " " + item.getItemMeta().getDisplayName().replaceAll("§f", ""));
+                    " " + item.getItemMeta().getDisplayName());
             player.closeInventory();
             return;
         }
@@ -102,7 +102,7 @@ public class PlayerEvents implements Listener {
             }
             if(material.equals(Material.REDSTONE_BLOCK)) {
                 plugin.claimed_reports.remove(player);
-                player.sendMessage(Utils.color("&cUnclaimed Report"));
+                player.sendMessage(Utils.color("&cDismissed Report"));
                 player.closeInventory();
             }
 
