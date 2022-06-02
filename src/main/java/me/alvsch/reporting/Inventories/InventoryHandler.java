@@ -78,17 +78,17 @@ public class InventoryHandler {
     }
 
     public static void viewReportsMenu(Player player, int page, Main plugin) {
-
         Inventory inv = Bukkit.createInventory(null, 54, Utils.color("&cReports"));
 
         for(int i = 0; i < 9; i++) {
             inv.setItem(i, placeholder);
         }
-        for(int i = 44; i < inv.getSize(); i++) {
+        for(int i = 45; i < inv.getSize(); i++) {
             inv.setItem(i, placeholder);
         }
         inv.setItem(4, Utils.createItem(Material.PAPER, 1, String.valueOf(page)));
         inv.setItem(51, Utils.createItem(Material.ARROW, 1, "&fNext Page"));
+
         if(page != 0) {
             inv.setItem(47, Utils.createItem(Material.ARROW, 1, "&fPrevious Page"));
         }
@@ -104,14 +104,14 @@ public class InventoryHandler {
 
             ItemStack item = new ItemStack(Material.PLAYER_HEAD, 1);
             SkullMeta meta = (SkullMeta) item.getItemMeta();
-            meta.setOwningPlayer(Bukkit.getPlayer(UUID.fromString(entry.getKey())));
+            meta.setOwningPlayer(Bukkit.getPlayer(UUID.fromString(entry.getKey().split("--")[0])));
 
             List<String> lore = new ArrayList<>();
             lore.add("§7Name: " + name);
             lore.add("§7Reason: " + reason);
             lore.add("");
             lore.add("§7Reported By: " + reporter);
-            lore.add("§7Reporter UUID: " + entry.getKey());
+            lore.add("§7Report ID: " + entry.getKey());
             lore.add("§f§lLeftClick to claim (WIP)");
             lore.add("§f§lRightClick to remove");
             meta.setLore(lore);
@@ -121,10 +121,14 @@ public class InventoryHandler {
             items.add(item);
         }
         int amount = 36;
+        if (items.size() / 36 < page) {
+            return;
+        }
         for(ItemStack i : items.subList(amount*page, Math.min(items.size(), amount*page+amount))) {
             inv.addItem(i);
         }
 
+        player.closeInventory();
         player.openInventory(inv);
 
 

@@ -2,17 +2,13 @@ package me.alvsch.reporting.events;
 
 import me.alvsch.reporting.Inventories.InventoryHandler;
 import me.alvsch.reporting.Main;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.List;
 
 public class PlayerEvents implements Listener {
 
@@ -34,6 +30,7 @@ public class PlayerEvents implements Listener {
                 int page = Integer.parseInt(page_meta.getDisplayName());
 
                 if(event.getCurrentItem().getItemMeta().getDisplayName().equals("§fNext Page")) {
+                    System.out.print("next");
                     InventoryHandler.viewReportsMenu(player, page + 1, plugin);
 
                 }

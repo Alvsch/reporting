@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 public class ReportCommand implements CommandExecutor {
 
     Main plugin = Main.getPlugin();
+    int report_id = Main.getReportId();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -41,10 +42,12 @@ public class ReportCommand implements CommandExecutor {
         }
 
         StringBuilder reason = new StringBuilder();
+        reason.append("\"");
         for(int i = 1; i < args.length; i++) {
             reason.append(args[i]);
             reason.append(" ");
         }
+        reason.append("\"");
 
         JsonParser parser = new JsonParser();
         JsonObject object = new JsonObject();
@@ -53,8 +56,8 @@ public class ReportCommand implements CommandExecutor {
         object.add("reporter", parser.parse(player.getName()));
 
         JsonObject jsonObject = plugin.data.get("reports").getAsJsonObject();
-        //TODO: fix issue with one player only able to save report of one person at a time
-        jsonObject.add(player.getUniqueId().toString(), object);
+        jsonObject.add(player.getUniqueId() + "--" + report_id, object);
+        report_id += 1;
 
         for(Player p : Bukkit.getOnlinePlayers()) {
             if(!(p.hasPermission("reporting.viewreports"))) {

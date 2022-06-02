@@ -18,6 +18,7 @@ import java.util.Scanner;
 public final class Main extends JavaPlugin {
 
     private static Main plugin;
+    private static int report_id;
 
     public JsonObject data;
 
@@ -28,6 +29,13 @@ public final class Main extends JavaPlugin {
 
         plugin = this;
 
+        try {
+            data = loadDataFile();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        report_id = data.get("id").getAsInt();
+
         InventoryHandler.init();
 
         getCommand("report").setExecutor(new ReportCommand());
@@ -35,23 +43,21 @@ public final class Main extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new PlayerEvents(), this);
 
-        try {
-            data = loadDataFile();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
 
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        JsonParser parser = new JsonParser();
+        data.add("id", parser.parse(String.valueOf(report_id)));
 
         try {
             saveDataFile();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
 
@@ -78,6 +84,7 @@ public final class Main extends JavaPlugin {
         }
         if(data.toString().isEmpty()) {
             data.append("{");
+            data.append("\"id\": 0,");
             data.append("\"reports\": {}");
             data.append("}");
         }
@@ -87,6 +94,9 @@ public final class Main extends JavaPlugin {
 
     public static Main getPlugin() {
         return plugin;
+    }
+    public static int getReportId() {
+        return report_id;
     }
 
 
