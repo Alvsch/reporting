@@ -1,6 +1,5 @@
 package me.alvsch.reporting.commands;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import me.alvsch.reporting.Inventories.InventoryHandler;
@@ -12,7 +11,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 
 public class ReportCommand implements CommandExecutor {
 

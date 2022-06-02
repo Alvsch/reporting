@@ -20,13 +20,10 @@ import java.util.UUID;
 
 public class InventoryHandler {
 
-    private static ItemStack placeholder = new ItemStack(Material.RED_STAINED_GLASS_PANE, 1);
+    private static ItemStack placeholder;
 
     public static void init() {
-
-        ItemMeta meta = placeholder.getItemMeta();
-        meta.setDisplayName(" ");
-        placeholder.setItemMeta(meta);
+        placeholder = Utils.createItem(Material.RED_STAINED_GLASS_PANE, 1, " ");
 
     }
 
@@ -87,12 +84,14 @@ public class InventoryHandler {
         for(int i = 0; i < 9; i++) {
             inv.setItem(i, placeholder);
         }
-        for(int i = 18; i < inv.getSize(); i++) {
+        for(int i = 44; i < inv.getSize(); i++) {
             inv.setItem(i, placeholder);
         }
         inv.setItem(4, Utils.createItem(Material.PAPER, 1, String.valueOf(page)));
         inv.setItem(51, Utils.createItem(Material.ARROW, 1, "&fNext Page"));
-        inv.setItem(47, Utils.createItem(Material.ARROW, 1, "&fPrevious Page"));
+        if(page != 0) {
+            inv.setItem(47, Utils.createItem(Material.ARROW, 1, "&fPrevious Page"));
+        }
 
 
         List<ItemStack> items = new ArrayList<>();

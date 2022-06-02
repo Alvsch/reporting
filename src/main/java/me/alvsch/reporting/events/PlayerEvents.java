@@ -9,6 +9,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.List;
 
 public class PlayerEvents implements Listener {
 
@@ -26,12 +30,15 @@ public class PlayerEvents implements Listener {
             }
 
             if(event.getCurrentItem().getType().equals(Material.ARROW)) {
+                ItemMeta page_meta = event.getClickedInventory().getItem(4).getItemMeta();
+                int page = Integer.parseInt(page_meta.getDisplayName());
+
                 if(event.getCurrentItem().getItemMeta().getDisplayName().equals("§fNext Page")) {
-                    InventoryHandler.viewReportsMenu(player, 1, plugin);
+                    InventoryHandler.viewReportsMenu(player, page + 1, plugin);
 
                 }
                 if(event.getCurrentItem().getItemMeta().getDisplayName().equals("§fPrevious Page")) {
-
+                    InventoryHandler.viewReportsMenu(player, page - 1, plugin);
 
                 }
                 return;
