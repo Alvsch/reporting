@@ -1,0 +1,3 @@
+# First write command, %PLAYER% for player, %TIME% for time %REASON% for reason
+tempban-command: "essentials:tempban %PLAYER% %TIME% %REASON%"
+mute-command: "essentials:mute %PLAYER% %TIME% %REASON%"

@@ -29,6 +29,9 @@ public final class Main extends JavaPlugin {
 
         plugin = this;
 
+        getConfig().options().copyDefaults(true);
+        saveConfig();
+
         try {
             data = loadDataFile();
         } catch (FileNotFoundException e) {

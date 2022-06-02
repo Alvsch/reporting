@@ -56,7 +56,7 @@ public class ReportCommand implements CommandExecutor {
         object.add("reporter", parser.parse(player.getName()));
 
         JsonObject jsonObject = plugin.data.get("reports").getAsJsonObject();
-        jsonObject.add(player.getUniqueId() + "--" + report_id, object);
+        jsonObject.add(offlinePlayer.getUniqueId() + "--" + report_id, object);
         report_id += 1;
 
         for(Player p : Bukkit.getOnlinePlayers()) {

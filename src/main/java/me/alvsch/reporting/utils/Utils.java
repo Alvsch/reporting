@@ -3,6 +3,7 @@ package me.alvsch.reporting.utils;
 import com.google.common.io.ByteStreams;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
@@ -12,6 +13,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
+import java.util.List;
 
 public class Utils {
 
@@ -44,6 +46,26 @@ public class Utils {
         meta.setLore(Arrays.asList(lore));
         item.setItemMeta(meta);
         return item;
+
+    }
+    public static ItemStack removeLore(ItemStack item, int... lore_number) {
+        if(lore_number.length < 1) {
+            return null;
+        }
+
+        ItemMeta meta = item.getItemMeta();
+        List<String> lore = meta.getLore();
+        for(int i : lore_number) {
+            lore.remove(i);
+        }
+
+        return item;
+    }
+
+    public static void fillRows(ItemStack item, Inventory inv, int start, int end) {
+        for(int i = start - 1; i < end; i++) {
+            inv.setItem(i, item);
+        }
 
     }
 

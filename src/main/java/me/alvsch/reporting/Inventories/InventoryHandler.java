@@ -2,6 +2,7 @@ package me.alvsch.reporting.Inventories;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.sun.tools.javac.jvm.Items;
 import me.alvsch.reporting.Main;
 import me.alvsch.reporting.utils.Utils;
 import org.bukkit.Bukkit;
@@ -32,12 +33,8 @@ public class InventoryHandler {
 
         Inventory inv = Bukkit.createInventory(null, 27, Utils.color("&cReport " + offlinePlayer.getName()));
 
-        for(int i = 0; i < 9; i++) {
-            inv.setItem(i, placeholder);
-        }
-        for(int i = 18; i < inv.getSize(); i++) {
-            inv.setItem(i, placeholder);
-        }
+        Utils.fillRows(placeholder, inv, 1, 9);
+        Utils.fillRows(placeholder, inv, 19, 27);
 
         ItemStack item = new ItemStack(Material.PLAYER_HEAD, 1);
         SkullMeta skullMeta = (SkullMeta) item.getItemMeta();
@@ -69,10 +66,48 @@ public class InventoryHandler {
     }
 
     public static void claimReportMenu(Player player, ItemStack report) {
+
         Inventory inv = Bukkit.createInventory(null, 27, "§cClaimed Report");
 
-        inv.setItem(0, report);
+        Utils.fillRows(placeholder, inv, 1, 9);
+        Utils.fillRows(placeholder, inv, 19,27);
 
+        report.setType(Material.PAPER);
+        report = Utils.removeLore(report, 4, 5);
+        inv.setItem(4, report);
+
+        inv.setItem(11, Utils.createItem(Material.ENDER_PEARL, 1, "&bTeleport To Victim"));
+        inv.setItem(13, Utils.createItem(Material.EMERALD_BLOCK, 1, "&fBan / Mute Menu"));
+        inv.setItem(15, Utils.createItem(Material.REDSTONE_BLOCK, 1, "&cDelete"));
+
+        player.closeInventory();
+        player.openInventory(inv);
+
+    }
+
+    public static void punishMenu(Player player, OfflinePlayer target) {
+        Inventory inv = Bukkit.createInventory(null, 36, "§cPunish " + target.getName());
+
+        Utils.fillRows(placeholder, inv, 1, 9);
+        Utils.fillRows(placeholder, inv , 28, 36);
+
+        inv.setItem(9, Utils.createItem(Material.PAPER, 1, "Insult", "15m mute"));
+        inv.setItem(10, Utils.createItem(Material.PAPER, 1, "Racist Words", "15m mute"));
+        inv.setItem(11, Utils.createItem(Material.PAPER, 1, "Swearing", "15m mute"));
+        inv.setItem(12, Utils.createItem(Material.PAPER, 1, "Spamming", "10m mute"));
+        inv.setItem(13, Utils.createItem(Material.DIAMOND_SWORD, 1, "KillAura", "30d ban"));
+        inv.setItem(14, Utils.createItem(Material.DIAMOND_SWORD, 1, "AntiKnockBack", "30d ban"));
+        inv.setItem(15, Utils.createItem(Material.DIAMOND_SWORD, 1, "Flying", "25d ban"));
+        inv.setItem(16, Utils.createItem(Material.DIAMOND_SWORD, 1, "Insult", "30d ban"));
+        inv.setItem(17, Utils.createItem(Material.ANVIL, 1, "Illegal Builds", "10d ban"));
+        inv.setItem(18, Utils.createItem(Material.ANVIL, 1, "Other", "5d ban"));
+        inv.setItem(19, Utils.createItem(Material.ANVIL, 1, "Other", "10d ban"));
+        inv.setItem(20, Utils.createItem(Material.ANVIL, 1, "Other", "15d ban"));
+        inv.setItem(21, Utils.createItem(Material.ANVIL, 1, "Other", "20d ban"));
+        inv.setItem(22, Utils.createItem(Material.ANVIL, 1, "Other", "25d ban"));
+        inv.setItem(23, Utils.createItem(Material.ANVIL, 1, "Other", "30d ban"));
+
+        player.closeInventory();
         player.openInventory(inv);
 
     }
@@ -80,12 +115,8 @@ public class InventoryHandler {
     public static void viewReportsMenu(Player player, int page, Main plugin) {
         Inventory inv = Bukkit.createInventory(null, 54, Utils.color("&cReports"));
 
-        for(int i = 0; i < 9; i++) {
-            inv.setItem(i, placeholder);
-        }
-        for(int i = 45; i < inv.getSize(); i++) {
-            inv.setItem(i, placeholder);
-        }
+        Utils.fillRows(placeholder, inv, 1, 9);
+        Utils.fillRows(placeholder, inv, 46, 54);
         inv.setItem(4, Utils.createItem(Material.PAPER, 1, String.valueOf(page)));
         inv.setItem(51, Utils.createItem(Material.ARROW, 1, "&fNext Page"));
 
@@ -133,4 +164,5 @@ public class InventoryHandler {
 
 
     }
+
 }
