@@ -14,10 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class InventoryHandler {
 
@@ -170,6 +167,41 @@ public class InventoryHandler {
         player.closeInventory();
         player.openInventory(inv);
 
+
+    }
+
+    public static void reportsTopMenu(Player player) {
+
+        Inventory inv = Bukkit.createInventory(null, 54, "§cReports Top");
+
+        Utils.fillRows(placeholder, inv, 1, 9);
+        Utils.fillRows(placeholder, inv, 46, 54);
+
+        JsonObject data = plugin.data.get("playertop").getAsJsonObject();
+        TreeMap<OfflinePlayer, Integer> toplist = new TreeMap<>();
+        for(Map.Entry<String, JsonElement> entry : data.entrySet()) {
+            JsonObject top = entry.getValue().getAsJsonObject();
+            int dismissed = top.get("dismissed").getAsInt();
+            int punished = top.get("punished").getAsInt();
+            int total = dismissed + punished;
+
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(entry.getKey()));
+
+            toplist.put(offlinePlayer, total);
+
+        }
+
+        Map<OfflinePlayer, Integer> sorted_toplist =  Utils.sortByValues(toplist);
+
+        for(Map.Entry<OfflinePlayer, Integer> entry : sorted_toplist.entrySet()) {
+
+
+
+        }
+
+
+        player.closeInventory();
+        player.openInventory(inv);
 
     }
 
