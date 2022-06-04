@@ -25,7 +25,6 @@ public final class Main extends JavaPlugin {
     public HashMap<Player, ItemStack> claimed_reports = new HashMap<>();
     public JsonObject data;
 
-
     @Override
     public void onEnable() {
         // Plugin startup logic
