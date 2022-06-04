@@ -2,8 +2,8 @@ package me.alvsch.reporting.Inventories;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.sun.tools.javac.jvm.Items;
 import me.alvsch.reporting.Main;
+import me.alvsch.reporting.utils.JsonUtils;
 import me.alvsch.reporting.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -89,8 +89,13 @@ public class InventoryHandler {
 
     }
 
-    public static void punishMenu(Player player, OfflinePlayer target) {
-        Inventory inv = Bukkit.createInventory(null, 36, "§cPunish " + target.getName());
+    public static void punishMenu(Player player, OfflinePlayer target, boolean reportmenu) {
+        Inventory inv;
+        if(reportmenu) {
+            inv = Bukkit.createInventory(null, 36, "§cPunish " + target.getName() + " -report-");
+        } else {
+            inv = Bukkit.createInventory(null, 36, "§cPunish " + target.getName());
+        }
 
         Utils.fillRows(placeholder, inv, 1, 9);
         Utils.fillRows(placeholder, inv , 28, 36);
@@ -170,14 +175,20 @@ public class InventoryHandler {
 
     }
 
-    public static void reportsTopMenu(Player player) {
+    public static void reportTopMenu(Player player, int page) {
 
         Inventory inv = Bukkit.createInventory(null, 54, "§cReports Top");
 
         Utils.fillRows(placeholder, inv, 1, 9);
         Utils.fillRows(placeholder, inv, 46, 54);
 
-        JsonObject data = plugin.data.get("playertop").getAsJsonObject();
+        inv.setItem(51, Utils.createItem(Material.ARROW, 1, "&fNext Page"));
+
+        if(page != 0) {
+            inv.setItem(47, Utils.createItem(Material.ARROW, 1, "&fPrevious Page"));
+        }
+
+        JsonObject data = JsonUtils.getProperty(plugin.data, "playertop").getAsJsonObject();
         TreeMap<OfflinePlayer, Integer> toplist = new TreeMap<>();
         for(Map.Entry<String, JsonElement> entry : data.entrySet()) {
             JsonObject top = entry.getValue().getAsJsonObject();
@@ -191,14 +202,30 @@ public class InventoryHandler {
 
         }
 
+        List<ItemStack> items = new ArrayList<>();
         Map<OfflinePlayer, Integer> sorted_toplist =  Utils.sortByValues(toplist);
+        for (Map.Entry<OfflinePlayer, Integer> entry : sorted_toplist.entrySet()) {
 
-        for(Map.Entry<OfflinePlayer, Integer> entry : sorted_toplist.entrySet()) {
+            ItemStack item = new ItemStack(Material.PLAYER_HEAD, 1);
+            SkullMeta meta = (SkullMeta) item.getItemMeta();
+            meta.setOwningPlayer(entry.getKey());
 
+            List<String> lore = new ArrayList<>();
+            lore.add("§7Punished " + data.get(entry.getKey().getUniqueId().toString()).getAsJsonObject().get("punished").getAsInt());
+            lore.add("§7Dismissed " + data.get(entry.getKey().getUniqueId().toString()).getAsJsonObject().get("dismissed").getAsInt());
+            meta.setLore(lore);
+            meta.setDisplayName("§f" + entry.getKey().getName());
 
-
+            item.setItemMeta(meta);
+            items.add(item);
         }
-
+        int amount = 36;
+        if (items.size() / 36 < page) {
+            return;
+        }
+        for(ItemStack i : items.subList(amount*page, Math.min(items.size(), amount*page+amount))) {
+            inv.addItem(i);
+        }
 
         player.closeInventory();
         player.openInventory(inv);

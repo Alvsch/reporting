@@ -1,7 +1,9 @@
 package me.alvsch.reporting.events;
 
+import com.google.gson.JsonObject;
 import me.alvsch.reporting.Inventories.InventoryHandler;
 import me.alvsch.reporting.Main;
+import me.alvsch.reporting.utils.JsonUtils;
 import me.alvsch.reporting.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -38,7 +40,6 @@ public class PlayerEvents implements Listener {
                 int page = Integer.parseInt(page_meta.getDisplayName());
 
                 if(item.getItemMeta().getDisplayName().equals("§fNext Page")) {
-                    System.out.print("next");
                     InventoryHandler.viewReportsMenu(player, page + 1, plugin);
 
                 }
@@ -67,7 +68,7 @@ public class PlayerEvents implements Listener {
             }
             return;
         }
-        if(event.getView().getTitle().contains("§cReport")) {
+        if(event.getView().getTitle().contains("§cReport ")) {
             if (item == null) {
                 return;
             }
@@ -98,18 +99,23 @@ public class PlayerEvents implements Listener {
                 player.closeInventory();
             }
             if(material.equals(Material.EMERALD_BLOCK)) {
-                InventoryHandler.punishMenu(player, offlinePlayer);
+                InventoryHandler.punishMenu(player, offlinePlayer, true);
             }
             if(material.equals(Material.REDSTONE_BLOCK)) {
                 plugin.claimed_reports.remove(player);
                 player.sendMessage(Utils.color("&cDismissed Report"));
+                JsonObject data = JsonUtils.getProperty(plugin.data, "playertop").getAsJsonObject();
+                JsonObject player_data = data.get(player.getUniqueId().toString()).getAsJsonObject();
+                JsonUtils.addProperty(plugin.data, "dismissed", JsonUtils.getProperty(player_data, "dismissed").getAsInt() + 1);
+
+
                 player.closeInventory();
             }
 
 
             return;
         }
-        if(event.getView().getTitle().contains("§cPunish")){
+        if(event.getView().getTitle().contains("§cPunish")) {
             List<String> lore = item.getItemMeta().getLore();
             String punish_length = lore.get(0).split(" ")[0];
             String punish_type = lore.get(0).split(" ")[1];
@@ -139,6 +145,32 @@ public class PlayerEvents implements Listener {
             plugin.claimed_reports.remove(player);
 
             player.closeInventory();
+            if(event.getView().getTitle().endsWith("-report-")) {
+                JsonObject data = JsonUtils.getProperty(plugin.data, "playertop").getAsJsonObject();
+                JsonObject player_data = data.get(player.getUniqueId().toString()).getAsJsonObject();
+                JsonUtils.addProperty(plugin.data, "punished", JsonUtils.getProperty(player_data, "punished").getAsInt() + 1);
+
+            }
+
+            return;
+        }
+        if(event.getView().getTitle().equals("§cReports Top")) {
+
+            if(item.getType().equals(Material.ARROW)) {
+                ItemMeta page_meta = event.getClickedInventory().getItem(4).getItemMeta();
+                int page = Integer.parseInt(page_meta.getDisplayName());
+
+                if(item.getItemMeta().getDisplayName().equals("§fNext Page")) {
+                    InventoryHandler.reportTopMenu(player, page + 1);
+
+                }
+                if(item.getItemMeta().getDisplayName().equals("§fPrevious Page")) {
+                    InventoryHandler.reportTopMenu(player, page - 1);
+
+                }
+                return;
+            }
+
             return;
         }
         event.setCancelled(false);

@@ -1,7 +1,9 @@
 package me.alvsch.reporting.commands;
 
+import com.google.gson.JsonObject;
 import me.alvsch.reporting.Inventories.InventoryHandler;
 import me.alvsch.reporting.Main;
+import me.alvsch.reporting.utils.JsonUtils;
 import me.alvsch.reporting.utils.Utils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -22,6 +24,13 @@ public class ViewReportsCommand implements CommandExecutor {
         Player player = (Player) sender;
 
         InventoryHandler.viewReportsMenu(player, 0, plugin);
+        if(!JsonUtils.exists(JsonUtils.getProperty(plugin.data, "playertop").getAsJsonObject(), player.getUniqueId().toString())) {
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("dismissed", 0);
+            jsonObject.addProperty("punihsed", 0);
+
+            JsonUtils.add(JsonUtils.getProperty(plugin.data, "playertop").getAsJsonObject(), player.getUniqueId().toString(), jsonObject);
+        }
 
         return true;
     }

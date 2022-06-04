@@ -33,3 +33,9 @@ commands:
 
         permission: reporting.moderate
         permission-message: §cYou can't execute this command
+
+    reporttop:
+        usage: /<command>
+
+        permission: reporting.reportstop
+        permission-message: §cYou can't execute this command

@@ -35,7 +35,7 @@ public class ModerateCommand implements CommandExecutor {
             return true;
         }
 
-        InventoryHandler.punishMenu(player, offlinePlayer);
+        InventoryHandler.punishMenu(player, offlinePlayer, false);
 
         return true;
     }

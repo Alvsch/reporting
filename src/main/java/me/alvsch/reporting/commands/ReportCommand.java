@@ -33,7 +33,7 @@ public class ReportCommand implements CommandExecutor {
 
         OfflinePlayer offlinePlayer = Bukkit.getPlayer(args[0]);
         if(offlinePlayer == null || !offlinePlayer.hasPlayedBefore()) {
-            player.sendMessage(Utils.color("&cThat Player is not Online or Played has not here before!"));
+            player.sendMessage(Utils.color("&cThat Player is not Online or hasn't Played here before!"));
             return true;
         }
         if (offlinePlayer.getUniqueId().equals(player.getUniqueId())) {

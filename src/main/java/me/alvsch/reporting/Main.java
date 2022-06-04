@@ -3,10 +3,7 @@ package me.alvsch.reporting;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import me.alvsch.reporting.Inventories.InventoryHandler;
-import me.alvsch.reporting.commands.ClaimedReportCommand;
-import me.alvsch.reporting.commands.ModerateCommand;
-import me.alvsch.reporting.commands.ReportCommand;
-import me.alvsch.reporting.commands.ViewReportsCommand;
+import me.alvsch.reporting.commands.*;
 import me.alvsch.reporting.events.PlayerEvents;
 import me.alvsch.reporting.utils.Utils;
 import org.bukkit.entity.Player;
@@ -51,6 +48,7 @@ public final class Main extends JavaPlugin {
         getCommand("viewreports").setExecutor(new ViewReportsCommand());
         getCommand("claimedreport").setExecutor(new ClaimedReportCommand());
         getCommand("moderate").setExecutor(new ModerateCommand());
+        getCommand("reporttop").setExecutor(new ReportTopCommand());
 
         getServer().getPluginManager().registerEvents(new PlayerEvents(), this);
 
@@ -96,6 +94,7 @@ public final class Main extends JavaPlugin {
         if(data.toString().isEmpty()) {
             data.append("{");
             data.append("\"id\": 0,");
+            data.append("\"playertop\": {},");
             data.append("\"reports\": {}");
             data.append("}");
         }
