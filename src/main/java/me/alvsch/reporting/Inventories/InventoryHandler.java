@@ -8,8 +8,10 @@ import me.alvsch.reporting.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -128,7 +130,12 @@ public class InventoryHandler {
         Utils.fillRows(placeholder, inv, 46, 54);
         inv.setItem(4, Utils.createItem(Material.PAPER, 1, String.valueOf(page)));
         inv.setItem(51, Utils.createItem(Material.ARROW, 1, "&fNext Page"));
-        inv.setItem(45, Utils.createItem(Material.SUNFLOWER, 1, "&eCREDITS", "§eMade By Alvsch1"));
+        ItemStack credits = Utils.createItem(Material.SUNFLOWER, 1, "&eCREDITS", "§eMade By Alvsch1");
+        credits.addEnchantment(Enchantment.LUCK, 1);
+        ItemMeta credit_meta = credits.getItemMeta();
+        credit_meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        credits.setItemMeta(credit_meta);
+        inv.setItem(45, credits);
 
         if(page != 0) {
             inv.setItem(47, Utils.createItem(Material.ARROW, 1, "&fPrevious Page"));
