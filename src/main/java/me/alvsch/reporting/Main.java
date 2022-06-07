@@ -77,7 +77,7 @@ public final class Main extends JavaPlugin {
         fileWriter.close();
 
     }
-    private JsonObject loadDataFile() throws FileNotFoundException {
+    private JsonObject loadDataFile() throws FileNotFoundException  {
         // load data.json (generate one if not there)
         // console and IO, instance
         File dataFile = new File(getDataFolder(), "data.json");

@@ -37,5 +37,5 @@ commands:
     reporttop:
         usage: /<command>
 
-        permission: reporting.reportstop
+        permission: reporting.reporttop
         permission-message: §cYou can't execute this command

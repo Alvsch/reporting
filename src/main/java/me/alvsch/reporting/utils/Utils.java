@@ -3,6 +3,7 @@ package me.alvsch.reporting.utils;
 import com.google.common.io.ByteStreams;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -68,24 +69,35 @@ public class Utils {
 
     }
 
-    public static <K, V extends Comparable<V>> Map<K, V>
-    sortByValues(final Map<K, V> map) {
-        Comparator<K> valueComparator =
-                new Comparator<K>() {
-                    public int compare(K k1, K k2) {
-                        int compare =
-                                map.get(k1).compareTo(map.get(k2));
-                        if (compare == 0)
-                            return 1;
-                        else
-                            return compare;
-                    }
-                };
 
-        Map<K, V> sortedByValues =
-                new TreeMap<K, V>(valueComparator);
-        sortedByValues.putAll(map);
-        return sortedByValues;
+    public static <K, V extends Comparable<V> > Map<K, V>
+    sortByValues(final Map<K, V> map)
+    {
+        // Static Method with return type Map and
+        // extending comparator class which compares values
+        // associated with two keys
+        Comparator<K> valueComparator = new Comparator<K>() {
+
+            // return comparison results of values of
+            // two keys
+            public int compare(K k1, K k2)
+            {
+                int comp = map.get(k1).compareTo(
+                        map.get(k2));
+                if (comp == 0)
+                    return 1;
+                else
+                    return comp;
+            }
+
+        };
+
+        // SortedMap created using the comparator
+        Map<K, V> sorted = new TreeMap<K, V>(valueComparator);
+
+        sorted.putAll(map);
+
+        return sorted;
     }
 
 }

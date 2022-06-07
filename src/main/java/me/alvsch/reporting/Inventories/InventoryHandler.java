@@ -43,19 +43,19 @@ public class InventoryHandler {
 
         item = new ItemStack(Material.PAPER, 1);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName("§cChat");
+        meta.setDisplayName("§eChat");
         item.setItemMeta(meta);
         inv.setItem(10, item);
 
         item = new ItemStack(Material.DIAMOND_SWORD, 1);
         meta = item.getItemMeta();
-        meta.setDisplayName("§cHacking");
+        meta.setDisplayName("§eHacking");
         item.setItemMeta(meta);
         inv.setItem(13, item);
 
         item = new ItemStack(Material.ANVIL, 1);
         meta = item.getItemMeta();
-        meta.setDisplayName("§cOther");
+        meta.setDisplayName("§eOther");
         item.setItemMeta(meta);
         inv.setItem(16, item);
 
@@ -128,6 +128,7 @@ public class InventoryHandler {
         Utils.fillRows(placeholder, inv, 46, 54);
         inv.setItem(4, Utils.createItem(Material.PAPER, 1, String.valueOf(page)));
         inv.setItem(51, Utils.createItem(Material.ARROW, 1, "&fNext Page"));
+        inv.setItem(45, Utils.createItem(Material.SUNFLOWER, 1, "&eCREDITS", "§eMade By Alvsch1"));
 
         if(page != 0) {
             inv.setItem(47, Utils.createItem(Material.ARROW, 1, "&fPrevious Page"));
@@ -189,7 +190,7 @@ public class InventoryHandler {
         }
 
         JsonObject data = JsonUtils.getProperty(plugin.data, "playertop").getAsJsonObject();
-        TreeMap<OfflinePlayer, Integer> toplist = new TreeMap<>();
+        TreeMap<String, Integer> toplist = new TreeMap<>();
         for(Map.Entry<String, JsonElement> entry : data.entrySet()) {
             JsonObject top = entry.getValue().getAsJsonObject();
             int dismissed = top.get("dismissed").getAsInt();
@@ -198,23 +199,23 @@ public class InventoryHandler {
 
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(entry.getKey()));
 
-            toplist.put(offlinePlayer, total);
+            toplist.put(offlinePlayer.getUniqueId().toString(), total);
 
         }
 
         List<ItemStack> items = new ArrayList<>();
-        Map<OfflinePlayer, Integer> sorted_toplist =  Utils.sortByValues(toplist);
-        for (Map.Entry<OfflinePlayer, Integer> entry : sorted_toplist.entrySet()) {
+        Map<String, Integer> sorted_toplist =  Utils.sortByValues(toplist);
+        for (Map.Entry<String, Integer> entry : sorted_toplist.entrySet()) {
 
             ItemStack item = new ItemStack(Material.PLAYER_HEAD, 1);
             SkullMeta meta = (SkullMeta) item.getItemMeta();
-            meta.setOwningPlayer(entry.getKey());
+            meta.setOwningPlayer(Bukkit.getOfflinePlayer(UUID.fromString(entry.getKey())));
 
             List<String> lore = new ArrayList<>();
-            lore.add("§7Punished " + data.get(entry.getKey().getUniqueId().toString()).getAsJsonObject().get("punished").getAsInt());
-            lore.add("§7Dismissed " + data.get(entry.getKey().getUniqueId().toString()).getAsJsonObject().get("dismissed").getAsInt());
+            lore.add("§7Punished " + data.get(entry.getKey()).getAsJsonObject().get("punished").getAsInt());
+            lore.add("§7Dismissed " + data.get(entry.getKey()).getAsJsonObject().get("dismissed").getAsInt());
             meta.setLore(lore);
-            meta.setDisplayName("§f" + entry.getKey().getName());
+            meta.setDisplayName("§f" + Bukkit.getOfflinePlayer(UUID.fromString(entry.getKey())).getName());
 
             item.setItemMeta(meta);
             items.add(item);

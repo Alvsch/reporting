@@ -13,6 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -22,6 +23,24 @@ import java.util.UUID;
 public class PlayerEvents implements Listener {
 
     Main plugin = Main.getPlugin();
+
+
+    @EventHandler
+    public void playerJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+
+        if(!player.hasPermission("reporting.viewreports")) {
+            return;
+        }
+        if(!JsonUtils.exists(plugin.data.get("playertop").getAsJsonObject(), player.getUniqueId().toString())) {
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("dismissed", 0);
+            jsonObject.addProperty("punished", 0);
+
+            JsonUtils.add(JsonUtils.getProperty(plugin.data, "playertop").getAsJsonObject(), player.getUniqueId().toString(), jsonObject);
+        }
+
+    }
 
     @EventHandler
     public void inventoryClick(InventoryClickEvent event) {

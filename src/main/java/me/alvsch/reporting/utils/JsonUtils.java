@@ -27,6 +27,9 @@ public class JsonUtils {
     }
 
     public static boolean exists(JsonObject jsonObject, String memberName) {
+        if(memberName == null) {
+            return false;
+        }
         return jsonObject.has(memberName);
     }
 

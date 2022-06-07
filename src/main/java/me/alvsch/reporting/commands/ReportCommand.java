@@ -31,18 +31,18 @@ public class ReportCommand implements CommandExecutor {
             return true;
         }
 
-        OfflinePlayer offlinePlayer = Bukkit.getPlayer(args[0]);
-        if(offlinePlayer == null || !offlinePlayer.hasPlayedBefore()) {
+        Player target = Bukkit.getPlayer(args[0]);
+        if(target == null || !target.hasPlayedBefore()) {
             player.sendMessage(Utils.color("&cThat Player is not Online or hasn't Played here before!"));
             return true;
         }
-        if (offlinePlayer.getUniqueId().equals(player.getUniqueId())) {
+        if (target.getUniqueId().equals(player.getUniqueId())) {
             player.sendMessage(Utils.color("&cYou can't report yourself"));
             return true;
         }
 
         if(args.length == 1) {
-            InventoryHandler.reportMenu(player, offlinePlayer);
+            InventoryHandler.reportMenu(player, target);
             return true;
         }
 
@@ -61,12 +61,12 @@ public class ReportCommand implements CommandExecutor {
 
         JsonParser parser = new JsonParser();
         JsonObject object = new JsonObject();
-        object.add("name", parser.parse(offlinePlayer.getName()));
+        object.add("name", parser.parse(target.getName()));
         object.add("reason", parser.parse(uncolored_reason));
         object.add("reporter", parser.parse(player.getName()));
 
         JsonObject jsonObject = plugin.data.get("reports").getAsJsonObject();
-        jsonObject.add(offlinePlayer.getUniqueId() + "--" + report_id, object);
+        jsonObject.add(target.getUniqueId() + "--" + report_id, object);
         report_id += 1;
 
         for(Player p : Bukkit.getOnlinePlayers()) {
@@ -74,7 +74,7 @@ public class ReportCommand implements CommandExecutor {
                 continue;
             }
             p.sendMessage(Utils.color("&e&l-- PLAYER REPORTED --"));
-            p.sendMessage(Utils.color("&ePlayer: " + offlinePlayer.getName()));
+            p.sendMessage(Utils.color("&ePlayer: " + target.getName()));
             p.sendMessage(Utils.color("&eReason: " + uncolored_reason));
             p.sendMessage(Utils.color("&eReported By: " + player.getName()));
             p.sendMessage(Utils.color("&e&l-- REPORT END --"));
